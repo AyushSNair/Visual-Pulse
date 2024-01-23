@@ -1,9 +1,37 @@
 from tkinter import *
 from tkinter import messagebox
 
+# wapp to insert data into student table ---> create
+from sqlite3 import *
+con = None
+
+
+
+
+
 
 # Function to handle the sign-in logic
 def signup():
+    try:
+        con = connect("createacc.db")
+        cursor = con.cursor()
+        sql = "insert into signup values('%s', '%s', %s, %s)"
+        email = input("Enter the email ")
+        username = input("Enter the username ")
+        create_password = input("Enter the password")
+        confirm_password = input("Confirm the password")
+        cursor.execute(sql % (email, username, create_password, confirm_password))
+        con.commit()
+        print("record created")
+
+
+    except Exception as e:
+        con.rollback()
+        print("issue is ", e)
+
+    finally:
+        if con is not None:
+            con.close()
     username = usern.get()
     create_password = cpwd.get()
     confirm_password = ccpwd.get()
@@ -107,14 +135,14 @@ ccpwd.bind('<FocusOut>', on_leave_ccpwd)
 Frame(frame, width=390, height=2, bg='#00008b').place(x=55, y=430)
 
 # Button for sign-up
-Button(frame, width=35, pady=7, text='Sign up', bg='#3030f8', fg='white', border=0, font='20',command=signup).place(x=50, y=480)
+sign_up = Button(frame, width=35, pady=7, text='Sign up', bg='#3030f8', fg='white', border=0, font='20',command=signup).place(x=50, y=480)
 
 # Label for sign-in link
 label = Label(frame, text='Already have an account?', font=('Microsoft YaHei UI Light', 11), bg='white')
 label.place(x=80, y=530)
 
 # Sign-in link button
-sign_in = Button(frame, text='Sign-in', border=0, bg='white', fg='#3030f8', font=('Microsoft YaHei UI Light', 12))
+sign_in = Button(frame, text='Sign-in', border=0, bg='white', fg='#3030f8', font=('Microsoft YaHei UI Light', 12),)
 sign_in.place(x=260, y=528)
 
 # Start the main loop
