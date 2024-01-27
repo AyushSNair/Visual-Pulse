@@ -1,18 +1,53 @@
 from tkinter import *
 from tkinter import messagebox
+import sqlite3
+import bcrypt
 
 
+def signup():
+    window.destroy()
+    import signup
 
-# Function to handle the sign-in logic
 def signin():
+
     username = user.get()
-    password = pwd.get()
+    entered_password = pwd.get()
 
-    if username == '':
-        messagebox.showerror("Error","Invalid! Enter Username")
+    if username == '' or entered_password == '':
+        messagebox.showerror("Error", "All Fields Are Required")
+        return
 
-    elif password == '':
-        messagebox.showerror("ERROR" "Invalid! Enter password")
+    conn = sqlite3.connect("signupdb")
+    with conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT create_password FROM signup WHERE username=? AND create_password=?',
+                       [user.get(), pwd.get()])
+
+        result_password = cursor.fetchone()
+
+        if result_password:
+            hashed_password = result_password[0].encode('UTF-8')
+            entered_password_encoded = entered_password.encode('UTF-8')
+
+            try:
+                if bcrypt.checkpw(entered_password_encoded, hashed_password):
+                    messagebox.showinfo("Success", "Login Successful!")
+                else:
+                    messagebox.showerror("Error", "Invalid Password")
+            except ValueError as e:
+                # If there is a ValueError, it may be due to an invalid salt
+                # Regenerate salt and check again
+                salt = bcrypt.gensalt()
+                hashed_password = bcrypt.hashpw(entered_password_encoded, salt)
+
+                if bcrypt.checkpw(entered_password_encoded, hashed_password):
+                    messagebox.showinfo("Success", "Login Successful!")
+                else:
+                    messagebox.showerror("Error", "Invalid Password")
+        else:
+            messagebox.showerror("Error", "Invalid Username or password")
+
+
 def on_enter(e):
     user.delete(0, 'end')
 def on_leave(e):
@@ -79,8 +114,9 @@ label = Label(frame, text='Don\'t have an account?', font=('Microsoft YaHei UI L
 label.place(x=50, y=440)
 
 # Sign-up link button
-sign_up = Button(frame, text='Sign-up', border=0, bg='white', fg='#3030f8', font=('Microsoft YaHei UI Light', 11),command=createaccount)
+sign_up = Button(frame, text='Sign-up', border=0, bg='white', fg='#3030f8', font=('Microsoft YaHei UI Light', 11),command=signup)
 sign_up.place(x=212, y=435)
+
 
 # Forgot Password link button
 forgot_pwd = Button(frame, fg='#3030f8', font=('Microsoft YaHei UI Light', 11), border=0, bg='white', text='Forgot Password?')
