@@ -1,18 +1,24 @@
-
-import sqlite3
+from sqlite3 import *
+from tkinter.messagebox import *
 import tkinter as tk
 #from PIL import Image, ImageTk
 
 def submit_daily_value():
-    value = entry.get()
-
-    # Use the 'with' statement to ensure proper connection management
-    with sqlite3.connect("expenditurebox") as conn:
-        cursor = conn.cursor()
-        # cursor.execute('CREATE TABLE IF NOT EXISTS value_entry(value INTEGER (10,5))')
-        cursor.execute("insert into value_entry(value) values (?)", (value,))
-
-    display_message.set(f"Hello! Today's expenditure is: {value}")
+    con = None
+    try:
+        con = connect("expenditure.db")
+        cursor = con.cursor()
+        val = int(entry.get())  # Convert the value to an integer
+        sql = "INSERT INTO expense (val) VALUES (?)"
+        cursor.execute(sql, (val,))
+        con.commit()
+        showinfo("Success", "Value entered successfully!")
+    except Exception as e:
+        con.rollback()
+        showerror("Issue", e)
+    finally:
+        if con is not None:
+            con.close()
     # You can add more functionality here
 
     # You can add more functionality here

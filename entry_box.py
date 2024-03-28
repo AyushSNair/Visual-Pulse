@@ -1,4 +1,6 @@
-import sqlite3
+from sqlite3 import *
+from tkinter.messagebox import *
+
 
 
 #
@@ -21,16 +23,21 @@ import tkinter as tk
 #from PIL import Image, ImageTk
 
 def submit_daily_value():
-    value = entry.get()
-
-    # Use the 'with' statement to ensure proper connection management
-    with sqlite3.connect("entrybox") as conn:
-        cursor = conn.cursor()
-        # cursor.execute('CREATE TABLE IF NOT EXISTS value_entry(value INTEGER (10,5))')
-        cursor.execute("insert into value_entry(value) values (?)", (value,))
-
-    display_message.set(f"Hello! Today's value is: {value}")
-    # You can add more functionality here
+    con = None
+    try:
+        con = connect("entry.db")
+        cursor = con.cursor()
+        val = int(entry.get())  # Convert the value to an integer
+        sql = "INSERT INTO entry (val) VALUES (?)"
+        cursor.execute(sql, (val,))
+        con.commit()
+        showinfo("Success", "Value entered successfully!")
+    except Exception as e:
+        con.rollback()
+        showerror("Issue", e)
+    finally:
+        if con is not None:
+            con.close()
 
     # You can add more functionality here
 
@@ -58,14 +65,44 @@ title_label = tk.Label(frame, text="Daily Input Box", font=("Helvetica", 16, "bo
 title_label.grid(row=0, column=0, pady=10)
 
 # Create an entry box
+#1
 entry_label = tk.Label(frame, text="Enter value for today:", font=("Arial", 12), bg="white", fg="#1f2c4b")
 entry_label.grid(row=1, column=0, pady=10)
-entry = tk.Entry(frame, font=("Arial", 12))
+n = entry = tk.Entry(frame, font=("Arial", 12))
 entry.grid(row=2, column=0, pady=10)
+
+#2
+entry_label = tk.Label(frame, text="Enter value for today:", font=("Arial", 12), bg="white", fg="#1f2c4b")
+entry_label.grid(row=3, column=0, pady=10)
+n = entry = tk.Entry(frame, font=("Arial", 12))
+entry.grid(row=4, column=0, pady=10)
+
+#3
+entry_label = tk.Label(frame, text="Enter value for today:", font=("Arial", 12), bg="white", fg="#1f2c4b")
+entry_label.grid(row=5, column=0, pady=10)
+n = entry = tk.Entry(frame, font=("Arial", 12))
+entry.grid(row=6, column=0, pady=10)
+
+#4
+entry_label = tk.Label(frame, text="Enter value for today:", font=("Arial", 12), bg="white", fg="#1f2c4b")
+entry_label.grid(row=7, column=0, pady=10)
+n = entry = tk.Entry(frame, font=("Arial", 12))
+entry.grid(row=8, column=0, pady=10)
+#5
+entry_label = tk.Label(frame, text="Enter value for today:", font=("Arial", 12), bg="white", fg="#1f2c4b")
+entry_label.grid(row=9, column=0, pady=10)
+n = entry = tk.Entry(frame, font=("Arial", 12))
+entry.grid(row=10, column=0, pady=10)
+
+#6
+entry_label = tk.Label(frame, text="Enter value for today:", font=("Arial", 12), bg="white", fg="#1f2c4b")
+entry_label.grid(row=11, column=0, pady=10)
+n = entry = tk.Entry(frame, font=("Arial", 12))
+entry.grid(row=12, column=0, pady=10)
 
 # Create a submit button and center it
 submit_button = tk.Button(frame, text="Submit", command=submit_daily_value, bg="#27ae60", fg="white", font=("Arial", 12, "bold"))
-submit_button.grid(row=3, column=0, pady=20)
+submit_button.grid(row=13, column=0, pady=20)
 
 # Create a message display area
 display_message = tk.StringVar()
