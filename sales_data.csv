@@ -1,0 +1,23 @@
+Previous_Sale,Season,Week Sale,Season_Winter,Season_Spring,Season_Summer,Season_Autumn
+4200,Winter,4500,1,0,0,0
+4300,Winter,4600,1,0,0,0
+4400,Winter,4700,1,0,0,0
+4500,Winter,4800,1,0,0,0
+4600,Winter,4900,1,0,0,0
+14500,Spring,14600,0,1,0,0
+14600,Spring,14700,0,1,0,0
+14700,Spring,14800,0,1,0,0
+14800,Spring,14900,0,1,0,0
+14900,Spring,15000,0,1,0,0
+15000,Spring,15100,0,1,0,0
+15100,Spring,15200,0,1,0,0
+20800,Summer,20900,0,0,1,0
+20900,Summer,21000,0,0,1,0
+21000,Summer,21100,0,0,1,0
+21100,Summer,21200,0,0,1,0
+21200,Summer,21300,0,0,1,0
+21300,Summer,21400,0,0,1,0
+22100,Autumn,22200,0,0,0,1
+22200,Autumn,22300,0,0,0,1
+22300,Autumn,22400,0,0,0,1
+22400,Autumn,22500,0,0,0,1
